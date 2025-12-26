@@ -213,6 +213,7 @@ const deleteLast = () => {
     return
   }
   
+  // 优先删除当前正在输入的数字
   if (currentNumber.length > 0) {
     currentNumber = currentNumber.slice(0, -1)
     display.value = currentNumber || '0'
@@ -221,6 +222,19 @@ const deleteLast = () => {
     if (currentNumber !== '' && operator !== '') {
       calculateIntermediate()
     }
+  } 
+  // 如果没有当前数字（比如刚刚输入了运算符），但有第一个数字
+  else if (firstNumber.length > 0 && operator === '') {
+    firstNumber = firstNumber.slice(0, -1)
+    display.value = firstNumber || '0'
+    expression.value = firstNumber || '0'
+  }
+  // 如果有运算符但没有当前数字，删除运算符
+  else if (operator !== '' && currentNumber === '') {
+    operator = ''
+    display.value = formatNumber(firstNumber)
+    expression.value = formatNumber(firstNumber)
+    isNewCalculation = false
   }
 }
 
